@@ -239,14 +239,11 @@ async function paste(string) {
 }
 
 async function submit() {
-  await sleep(1);
   robot.moveMouse(1300, 800);
   robot.mouseClick();
 
   await tests();
   robot.mouseClick();
-
-  await sleep(1);
 
   getQuestion();
 }
