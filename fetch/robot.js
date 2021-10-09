@@ -8,7 +8,7 @@ let key = '';
 let attempt = 0;
 
 const myHeaders = new Headers({
-  Cookie: 'PHPSESSID=2a2ae7d6803ab5ad5c8046a5b40ac479;',
+  Cookie: 'PHPSESSID=c13d014a2d1593980a291584482b77d0;',
 });
 
 initialize();

@@ -434,6 +434,26 @@ export default function solveTask(id, tests) {
       }
       return result;
     }
+    case 114: {
+      const result = {};
+      for (const t in tests) {
+        const test = tests[t];
+        const x = test.args[0];
+        const code = x.sort().reverse();
+        result[t] = code;
+      }
+      return result;
+    }
+    case 101: {
+      const result = {};
+      for (const t in tests) {
+        const test = tests[t];
+        const x = test.args[0];
+        const code = ticTacToeWinner(x);
+        result[t] = code;
+      }
+      return result;
+    }
     default: {
       const result = { success: false };
       return result;
@@ -581,5 +601,32 @@ function missingInteger(x) {
     if (x[i + 1] !== value) {
       return value;
     }
+  }
+}
+
+function ticTacToeWinner(x) {
+  x = x.flat();
+  const combinations = '012 345 678 036 147 258 048 246'.split(' ');
+  let xWon = false;
+  let oWon = false;
+  for (let i = 0; i < combinations.length; i++) {
+    const first = combinations[i][0];
+    const second = combinations[i][1];
+    const third = combinations[i][2];
+    if (x[first] === 'x' && x[second] === 'x' && x[third] === 'x') {
+      xWon = true;
+    }
+    if (x[first] === 'o' && x[second] === 'o' && x[third] === 'o') {
+      oWon = true;
+    }
+  }
+  if (xWon && oWon) {
+    return 'error';
+  } else if (xWon) {
+    return 'x';
+  } else if (oWon) {
+    return 'o';
+  } else {
+    return 'draw';
   }
 }
