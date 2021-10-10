@@ -454,6 +454,17 @@ export default function solveTask(id, tests) {
       }
       return result;
     }
+    case 99: {
+      const result = {};
+      for (const t in tests) {
+        const test = tests[t];
+        const x = test.args[0];
+        const y = test.args[1];
+        const code = isAnagram(x, y);
+        result[t] = code;
+      }
+      return result;
+    }
     default: {
       const result = { success: false };
       return result;
@@ -629,4 +640,17 @@ function ticTacToeWinner(x) {
   } else {
     return 'draw';
   }
+}
+
+function isAnagram(x, y) {
+  x = x.split('').sort();
+  y = y.split('').sort();
+  for (let i = 0; i < x.length; i++) {
+    if (x[i] === y[i]) {
+      continue;
+    } else {
+      return false;
+    }
+  }
+  return true;
 }
