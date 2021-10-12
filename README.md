@@ -92,3 +92,48 @@ transition-duration: 0.2s;
 ```
 
 This approach could solve all the questions in 30-40 seconds, which wasn't quite fast enough. I needed another approach.
+
+## Fetch
+
+By studying the Fetch/XHR requests made in the browser under the Network tab in devtools I figured out a way to solve the tasks without using the browser at all. Using [node-fetch](https://www.npmjs.com/package/node-fetch) and [form-data](https://www.npmjs.com/package/form-data) I could initialize the challenge from the terminal which would return the next task as JSON, which could then be solved and sent in a new fetch request. Each successful task solved would return the next task which would be handled in a recursive function until `isChallengeEntryFinished` came back as true.
+
+```javascript
+async function getQuestion(task) {
+  ...
+  const tests = task.tests_json;
+  result = solveTask(task.id, tests);
+}
+
+export default function solveTask(id, tests) {
+  switch (id) {
+    case 124: {
+      const result = {};
+      for (const t in tests) {
+        const test = tests[t];
+        const x = test.args[0];
+        const code = x ** 3;
+        result[t] = code;
+      }
+      return result;
+    }
+  ...
+}
+```
+
+The only difference in approach was that instead of sending in the code solution the request provided a certain number of tests that had to be solved and returned in the fetch for the task to be successfully completed.
+
+## Fetch (fork)
+
+The fetch approach was faster than the robotjs, but never fast enough to land me any higher than around 50th place in the leaderboard. I unsuccessfully tried a third approach in solving the challenge using Node.js [child_process](https://nodejs.org/api/child_process.html) to spawn new processes which are independent of the parent.
+
+```javascript
+if (tryAgain) {
+  attempt += 1;
+}
+```
+
+Since the most time consuming part of the previous approach were all the fetch requests (usually ranging between 400-800ms per request) I was hoping to be able to do two request simultaneously. The idea was to have the first request skip a task in order to generate a new one, and then both processes would each have a unique task to solve. The problem however was that a unique attempt id had to be provided with each request, and a successful request would return a new id. I somewhat managed to get around it by keep sending requests and incrementing the id by 1 whenever they failed, but that only worked occasionally.
+
+## Conclusion
+
+I really enjoyed this challenge. They encouraged participants to come up with clever solutions to solve the challenge and that was by far the most fun part of it. I learnt a lot about automation, recursive functions and more about fetch requests. I would have loved to see how participants in the top ten solved the challenge. The 1st place winner had 125 points more than me, and 10 points were awarded per second of time remaining. My best attempt was completed in approximately 16 seconds. This means that the winner must have figured out a way to solve the challenge in barely four seconds. I'm very happy with my result as a student one year into my studies competing against pros and hackers.
